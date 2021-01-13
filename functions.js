@@ -38,14 +38,22 @@ function numberOfVideos(channel) {
  *
  * BONUS: use iteration method `.some()`
  ****************************************************************/
-function channelHasVideo(videoTitle, channel) {
-      
-     //const vlist= channel.filter(ch =>ch.videos[0]).some((res) =>  res["title"] === videoTitle);
-     const v=(res) => res.videos.title === videoTitle;
-     const vlist= channel.some((res) => JSON.stringify(res.videos.title) === videoTitle);
-     return  v;
+
+ /*  function channelHasVideo(videoTitle, channel) {
+   let found=false;
+    channel.videos.forEach((video)=>{
+      if(video.title.toLowerCase() === videoTitle.toLowerCase()){
+        found=true
+      }
+    });
+    return found;
+  } */
+  function channelHasVideo(videoTitle, channel) {
+      return channel.videos.some(
+        (video) => video.title.toLowerCase() === videoTitle.toLowerCase()
+     );
 }
-console.log(channelHasVideo("The Universal S", channels[0]));
+//console.log(channelHasVideo("The Universal S", channels[0]));
 
  //console.log(channelHasVideo("The Universal S", channels[1]));
 
@@ -74,11 +82,21 @@ function getChannelByName(channelName, channels) {
  * BONUS: use iteration methods `.find()` and `.some()`
  ****************************************************************/
 function getChannelByVideoTitle(videoTitle, channels) {
-        
+     return channels.find(channel => channelHasVideo(videoTitle, channel) );
+ 
+  /*      let channelFound;
+      channels.forEach((channel)=> {
+        channel.videos.forEach((video) => {
+          if(video.title === videoTitle){
+            channelFound=channel;
+          }
+        });
+        return channelFound;
+      });  */ 
   
   
 }
-console.log(channelHasVideo("The Universal S", channels));
+//console.log(channelHasVideo("The Universal S", channels));
 
 /**************************************************************
  * searchChannels(query, channels):
@@ -90,12 +108,11 @@ console.log(channelHasVideo("The Universal S", channels));
  ****************************************************************/
 function searchChannels(query, channels) {
   
- const chanames= channels.filter(sc => sc.description.includes(query));
-
-  return chanames;
-
+ return channels.filter((sc)=>sc.description.toLowerCase().includes(query) || sc.name.toLowerCase().includes(query));
     
+
 }
+
 // console.log(searchChannels("the", channels))
 
 module.exports = {
